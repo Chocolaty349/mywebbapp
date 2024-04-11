@@ -1,41 +1,64 @@
 package xee;
 
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
-import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 
-public class XmlParser {
-    public static void main(String[] args) {
+@WebServlet(name = "XMLParser", value = "/parseXML")
+public class XmlParser extends HttpServlet{
+    
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        PrintWriter out = response.getWriter();
         try {
-            File inputFile = new File("input.xml");
+            // Prepare to parse XML
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(inputFile);
+
+            // Parse XML from request input stream
+            Document doc = dBuilder.parse(request.getInputStream());
+
+            // Your XML parsing logic here
+            // For example, extract data, process it, etc.
             doc.getDocumentElement().normalize();
 
-            System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
+            out.println("Root element :" + doc.getDocumentElement().getNodeName());
             NodeList nList = doc.getElementsByTagName("User");
-            System.out.println("----------------------------");
+            out.println("----------------------------");
 
             for (int temp = 0; temp < nList.getLength(); temp++) {
                 Node nNode = nList.item(temp);
-                System.out.println("\nCurrent Element :" + nNode.getNodeName());
+                out.println("\nCurrent Element :" + nNode.getNodeName());
 
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;
-                    System.out.println("User id : "
-                            + eElement.getAttribute("id"));
-                    System.out.println("Name : "
+                    out.println("First Name : "
                             + eElement
-                                    .getElementsByTagName("Name")
+                                    .getElementsByTagName("firstname")
                                     .item(0)
                                     .getTextContent());
+                    out.println("Last Name: " + eElement
+                                                        .getElementsByTagName("lastname")
+                                                        .item(0)
+                                                        .getTextContent()); 
                 }
             }
+            // Respond back
+            // response.setContentType("text/html");
+            // out.println("<html><body>");
+            // out.println("XML processed successfully!");
+            // out.println("</body></html>");
         } catch (Exception e) {
             e.printStackTrace();
         }

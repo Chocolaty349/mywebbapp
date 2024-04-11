@@ -1,48 +1,79 @@
 package xee;
 
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import java.io.StringWriter;
+import java.net.HttpURLConnection;
+import java.io.OutputStreamWriter;
+import java.net.URL;
 
-public class XmlCreator {
-    public static void main(String[] args) {
-        try {
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.newDocument();
+@WebServlet(name = "XmlCreator", value = "/makexmlrequest")
 
-            // Root element
-            Element rootElement = doc.createElement("Users");
-            doc.appendChild(rootElement);
+public class XmlCreator extends HttpServlet{
+    public void doPost(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException{
+            response.setContentType("text/html");
 
-            // User element
-            Element user = doc.createElement("User");
-            rootElement.appendChild(user);
+            String fname = request.getParameter("fname");
+            String lname = request.getParameter("lname");
+            
+            try {
+                DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder dbBuider = dbFactory.newDocumentBuilder();
+                Document doc = dbBuider.newDocument();
 
-            // Setting attribute to user element
-            user.setAttribute("id", "1");
+                Element rootElem = doc.createElement("User");
+                doc.appendChild(rootElem);
 
-            // Name element
-            Element name = doc.createElement("Name");
-            name.appendChild(doc.createTextNode("John Doe"));
-            user.appendChild(name);
+                Element firstname = doc.createElement("firstname");
+                rootElem.appendChild(firstname);
+                firstname.appendChild(doc.createTextNode(fname));
 
-            // Writing the content into XML
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            Transformer transformer = transformerFactory.newTransformer();
-            DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(System.out);
+                Element lastname = doc.createElement("lastname");
+                rootElem.appendChild(lastname);
+                lastname.appendChild(doc.createTextNode(lname));
 
-            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-            transformer.transform(source, result);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+                TransformerFactory transformerFactory = TransformerFactory.newInstance();
+                Transformer transformer = transformerFactory.newTransformer();
+                transformer.setOutputProperty(javax.xml.transform.OutputKeys.INDENT, "yes");
+
+                // Use a StringWriter as the result stream
+                StringWriter writer = new StringWriter();
+                StreamResult result = new StreamResult(writer);
+                DOMSource source = new DOMSource(doc);
+
+                // Transform the XML
+                transformer.transform(source, result);
+                String xmlString = result.getWriter().toString();
+
+                URL url = new URL("http://localhost:8080/mywebbapp/parseXML");
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setDoOutput(true);
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Content-Type", "application/xml");
+                try (OutputStreamWriter OSwriter = new OutputStreamWriter(conn.getOutputStream())) {
+                    OSwriter.write(xmlString);
+                }
+
+                int responseCode = conn.getResponseCode();
+                response.getWriter().println(responseCode);
+                response.getWriter().println(xmlString);
+                // System.out.println("Response Code : " + responseCode);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
     }
+
 }
