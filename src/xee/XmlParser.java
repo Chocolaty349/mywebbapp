@@ -23,14 +23,12 @@ public class XmlParser extends HttpServlet{
         PrintWriter out = response.getWriter();
         try {
             // Prepare to parse XML
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-
+            // DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            // DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             // Parse XML from request input stream
             Document doc = dBuilder.parse(request.getInputStream());
 
-            // Your XML parsing logic here
-            // For example, extract data, process it, etc.
             doc.getDocumentElement().normalize();
 
             out.println("Root element :" + doc.getDocumentElement().getNodeName());
@@ -60,7 +58,7 @@ public class XmlParser extends HttpServlet{
             // out.println("XML processed successfully!");
             // out.println("</body></html>");
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(out);
         }
     }
 }
