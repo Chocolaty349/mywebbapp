@@ -27,6 +27,9 @@ public class FirstServlet extends HttpServlet {
             out.println("Error code: " + e.getErrorCode());
             out.println("SQL state: " + e.getSQLState());
         }
+        if(LoginDao.warn != null){
+            out.println(LoginDao.warn);
+        }
 
         if (valid) {
             RequestDispatcher rd = request.getRequestDispatcher("servlet2");
