@@ -16,20 +16,24 @@ public class FirstServlet extends HttpServlet {
 
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
+        LoginDao ld = new LoginDao();
 
         String n = request.getParameter("username");
         String p = request.getParameter("userpass");
         boolean valid = false;
         try {
-            valid = LoginDao.validate(n, p);
+            valid = ld.validate(n, p);
+            if (ld.warn != null) {
+                out.println(ld.warn);
+            }
         } catch (SQLException e) {
             out.println("Error message: " + e.getMessage());
             out.println("Error code: " + e.getErrorCode());
             out.println("SQL state: " + e.getSQLState());
+        } catch (Exception ee){
+            out.println(ee.getMessage());
         }
-        if(LoginDao.warn != null){
-            out.println(LoginDao.warn);
-        }
+
 
         if (valid) {
             RequestDispatcher rd = request.getRequestDispatcher("servlet2");
