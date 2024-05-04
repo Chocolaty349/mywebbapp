@@ -1,7 +1,5 @@
 package fileupload;
 
-import java.util.logging.*;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -18,18 +16,16 @@ import jakarta.servlet.http.Part;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.annotation.MultipartConfig;
 
-@WebServlet(name = "UploadServlet", urlPatterns = { "/upload" })
+@WebServlet(name = "UploadServlet", urlPatterns = { "/uploadnewfile" })
 @MultipartConfig
 public class UploadServlet extends HttpServlet {
-    private final static Logger LOGGER = Logger.getLogger(UploadServlet.class.getCanonicalName());
 
-    protected void processRequest(HttpServletRequest request,
-            HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
         // Create path components to save the file
-        final String path = request.getParameter("destination");
+        final String path = "/opt/tomcat/apache-tomcat-10.1.18/webapps/mywebbapp/data";
         final Part filePart = request.getPart("file");
         final String fileName = getFileName(filePart);
 
@@ -49,16 +45,12 @@ public class UploadServlet extends HttpServlet {
                 out.write(bytes, 0, read);
             }
             writer.println("New file " + fileName + " created at " + path);
-            LOGGER.log(Level.INFO, "File{0}being uploaded to {1}",
-                    new Object[] { fileName, path });
+            
         } catch (FileNotFoundException fne) {
             writer.println("You either did not specify a file to upload or are "
                     + "trying to upload a file to a protected or nonexistent "
                     + "location.");
             writer.println("<br/> ERROR: " + fne.getMessage());
-
-            LOGGER.log(Level.SEVERE, "Problems during file upload. Error: {0}",
-                    new Object[] { fne.getMessage() });
         } finally {
             if (out != null) {
                 out.close();
@@ -73,8 +65,7 @@ public class UploadServlet extends HttpServlet {
     }
 
     private String getFileName(final Part part) {
-        final String partHeader = part.getHeader("content-disposition");
-        LOGGER.log(Level.INFO, "Part Header = {0}", partHeader);
+        //final String partHeader = part.getHeader("content-disposition");
         for (String content : part.getHeader("content-disposition").split(";")) {
             if (content.trim().startsWith("filename")) {
                 return content.substring(
