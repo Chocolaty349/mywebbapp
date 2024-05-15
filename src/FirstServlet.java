@@ -23,9 +23,6 @@ public class FirstServlet extends HttpServlet {
         boolean valid = false;
         try {
             valid = ld.validate(n, p);
-            if (ld.warn != null) {
-                out.println(ld.warn);
-            }
         } catch (SQLException e) {
             out.println("Error message: " + e.getMessage());
             out.println("Error code: " + e.getErrorCode());

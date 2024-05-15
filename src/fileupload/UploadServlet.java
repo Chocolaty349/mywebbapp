@@ -16,8 +16,15 @@ import jakarta.servlet.http.Part;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.annotation.MultipartConfig;
 
-@WebServlet(name = "UploadServlet", urlPatterns = { "/uploadnewfile" })
-@MultipartConfig
+@WebServlet(
+    name = "UploadServlet",
+    urlPatterns = { "/uploadnewfile" }
+    )
+@MultipartConfig(
+    location = "/tmp",
+    maxFileSize = 1024 * 1024 * 50, //50MB
+    maxRequestSize = 1024 * 1024 * 50 //50MB
+)
 public class UploadServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -25,7 +32,7 @@ public class UploadServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
 
         // Create path components to save the file
-        final String path = "/opt/tomcat/apache-tomcat-10.1.18/webapps/mywebbapp/data";
+        final String path = "/opt/tomcat/apache-tomcat-10.1.23/webapps/mywebbapp/data";
         final Part filePart = request.getPart("file");
         final String fileName = getFileName(filePart);
 

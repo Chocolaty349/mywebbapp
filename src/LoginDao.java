@@ -13,7 +13,6 @@ public class LoginDao {
             Statement statem = con.createStatement();
             String sql = "SELECT * FROM customers WHERE customerName = '" + name + "' AND customerNumber = " + pass;
             ResultSet rs = statem.executeQuery(sql);
-            warn = statem.getWarnings().getMessage();
             
             status = rs.next();
             statem.close();
