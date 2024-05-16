@@ -8,9 +8,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpSession;
 
-@WebServlet(name = "FirstServlet", value = "/servlet1")
-public class FirstServlet extends HttpServlet {
+@WebServlet(name = "LoginServlet", value = "/servlet1")
+public class LoginServlet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -33,7 +34,13 @@ public class FirstServlet extends HttpServlet {
 
 
         if (valid) {
-            RequestDispatcher rd = request.getRequestDispatcher("servlet2");
+            RequestDispatcher rd = request.getRequestDispatcher("welcom_page.jsp");
+            HttpSession sess = request.getSession();
+            if(n == "admin"){
+                sess.setAttribute("sessionPrivilage", "admin");
+            }
+            else
+                sess.setAttribute("sessionPrivilage", "user");
             rd.forward(request, response);
         } else {
             out.print("Sorry username or password error");

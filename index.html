@@ -1,5 +1,24 @@
-<form action="servlet1" method="post">
-    Name:<input type="text" name="username" /><br /><br />
-    Password:<input type="password" name="userpass" /><br /><br />
-    <input type="submit" value="login" />
-</form>
+<!DOCTYPE html>
+<html>
+    <style>
+        body {
+            text-align: center;
+        }
+    </style>
+    <body>
+        <form action="servlet1" method="post">
+            <ul>
+                <li>
+                    <label for="name">Username:</label>
+                    <input type="text" id="name" name="username" />
+                </li>
+                <li>
+                    <label for="msg">Password:</label>
+                    <input type="password" id="pass" name="userpass" />
+                </li>
+            </ul>
+            <input type="submit" value="login" />
+        </form>
+    </body>
+
+</html>
