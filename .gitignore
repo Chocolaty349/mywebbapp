@@ -25,4 +25,4 @@ replay_pid*
 .vscode
 .gitignore
 data/
-WEB-INF/
+WEB-INF/**/*.class
