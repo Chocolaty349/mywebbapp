@@ -1,6 +1,6 @@
+<%@ page import="jakarta.servlet.*" language="java" session="true" %>
 <!DOCTYPE html>
 <html>
-<%@ page import="jakarta.servlet.*" language="java" session="true" %>
     <head>
         <title>
             welcome page

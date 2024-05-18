@@ -8,10 +8,10 @@ public class LoginDao {
             throws SQLException {
         boolean status = false;
         try {
-            Connection con = DBUtil.getConnection("jdbc:mysql://localhost:3306/classicmodels", "root", "password");
+            Connection con = DBUtil.getConnection("jdbc:mysql://localhost:3306/User", "root", "password");
 
             Statement statem = con.createStatement();
-            String sql = "SELECT * FROM customers WHERE customerName = '" + name + "' AND customerNumber = " + pass;
+            String sql = "SELECT * FROM employee WHERE name = '" + name + "' AND password = '" + pass + "'";
             ResultSet rs = statem.executeQuery(sql);
             
             status = rs.next();
@@ -20,7 +20,7 @@ public class LoginDao {
         } catch (SQLException e) {
             throw e;
         } catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
         return status;
     }

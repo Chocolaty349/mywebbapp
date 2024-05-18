@@ -14,7 +14,8 @@ import jakarta.servlet.http.HttpSession;
 public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        
+        HttpSession sess = request.getSession();
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         LoginDao ld = new LoginDao();
@@ -32,15 +33,17 @@ public class LoginServlet extends HttpServlet {
             out.println(ee.getMessage());
         }
 
-
         if (valid) {
             RequestDispatcher rd = request.getRequestDispatcher("welcom_page.jsp");
-            HttpSession sess = request.getSession();
+            sess.invalidate();
             if(n == "admin"){
-                sess.setAttribute("sessionPrivilage", "admin");
+                HttpSession admin_sess = request.getSession();
+                admin_sess.setAttribute("sessionPrivilage", "admin");
             }
-            else
-                sess.setAttribute("sessionPrivilage", "user");
+            else{
+                HttpSession user_sess = request.getSession();
+                user_sess.setAttribute("sessionPrivilage", "user");
+            }
             rd.forward(request, response);
         } else {
             out.print("Sorry username or password error");

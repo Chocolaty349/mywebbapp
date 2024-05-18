@@ -32,7 +32,9 @@ public class UploadServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
 
         // Create path components to save the file
-        final String path = "/opt/tomcat/apache-tomcat-10.1.23/webapps/mywebbapp/data";
+        final String admin_path = "/opt/tomcat/apache-tomcat-10.1.23/webapps/mywebbapp/data";
+        final String user_path = "/opt/tomcat/apache-tomcat-10.1.23/webapps/mywebbapp/normal_data";
+        
         final Part filePart = request.getPart("file");
         final String fileName = getFileName(filePart);
 
@@ -41,7 +43,7 @@ public class UploadServlet extends HttpServlet {
         final PrintWriter writer = response.getWriter();
 
         try {
-            out = new FileOutputStream(new File(path + File.separator
+            out = new FileOutputStream(new File(admin_path + File.separator
                     + fileName));
             filecontent = filePart.getInputStream();
 
@@ -51,7 +53,7 @@ public class UploadServlet extends HttpServlet {
             while ((read = filecontent.read(bytes)) != -1) {
                 out.write(bytes, 0, read);
             }
-            writer.println("New file " + fileName + " created at " + path);
+            writer.println("New file " + fileName + " created at " + admin_path);
             
         } catch (FileNotFoundException fne) {
             writer.println("You either did not specify a file to upload or are "
