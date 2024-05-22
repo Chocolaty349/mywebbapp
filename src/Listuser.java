@@ -16,29 +16,23 @@ public class Listuser extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-
         try {
             Connection con = DBUtil.getConnection("jdbc:mysql://localhost:3306/User", "root", "password");
             Statement stmt = con.createStatement();
-            // String sql = "SELECT employeeNumber, lastName, firstName FROM employees where
-            // employeeNumber = "
-            // + request.getParameter("number")
-            // + " and firstName = '" + request.getParameter("firstName")
-            // + "' and lastName = '" + request.getParameter("lastName") + "'";
-            String sql = "SELECT employeeNumber, lastName, firstName FROM employees where employeeNumber = "
-                    + request.getParameter("number");
-            ResultSet rs = stmt.executeQuery(sql);
 
+            String sql = "SELECT * FROM employee";
+            ResultSet rs = stmt.executeQuery(sql);
+            out.println("<!DOCTYPE html>");
             out.println("<html><body>");
             out.println("<table border='1'><tr><th>number</th><th>lastname</th><th>firstname</th></tr>");
 
             while (rs.next()) {
 
-                int number = rs.getInt("employeeNumber");
-                String lastname = rs.getString("lastName");
-                String firstname = rs.getString("firstName");
+                String name = rs.getString("name");
+                String email = rs.getString("email");
+                String password = rs.getString("password");
 
-                out.println("<tr><td>" + number + "</td><td>" + lastname + "</td>" + "<td>" + firstname + "</td></tr>");
+                out.println("<tr><td>" + name + "</td><td>" + email + "</td>" + "<td>" + password + "</td></tr>");
             }
             out.println("</table>");
             out.println("</body></html>");

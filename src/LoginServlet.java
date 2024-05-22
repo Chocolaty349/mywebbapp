@@ -15,7 +15,7 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        HttpSession sess = request.getSession();
+        HttpSession sess = request.getSession();// session for guest
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         LoginDao ld = new LoginDao();
@@ -35,8 +35,8 @@ public class LoginServlet extends HttpServlet {
 
         if (valid) {
             RequestDispatcher rd = request.getRequestDispatcher("welcom_page.jsp");
-            sess.invalidate();
-            if(n == "admin"){
+            sess.invalidate();//remove session for guest
+            if(n.equals("admin")){
                 HttpSession admin_sess = request.getSession();
                 admin_sess.setAttribute("sessionPrivilage", "admin");
             }

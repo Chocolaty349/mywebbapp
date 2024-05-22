@@ -8,12 +8,7 @@
 <body>
     <h1>Directory Listing</h1>
     <ul>
-        <%-- <c:forEach var="file" items="${files}">
-            <li>
-                <a href="viewFile?fileName=${file.name}">${file.name}</a>
-            </li>
-        </c:forEach> --%>
-        <%=session.getAttribute("file_count")%>
+        <%=request.getAttribute("session_name")%>
         <%
             File[] file_list = (File[]) request.getAttribute("files");
             for (File file : file_list){
