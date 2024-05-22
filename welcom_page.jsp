@@ -60,9 +60,6 @@ body {
     <div class="container">
         <div class="profile-box">
             <h2>Personal Information</h2>
-            <div class="profile-picture">
-                <img src="profile.jpg" alt="Profile Picture">
-            </div>
             <table class="profile-info">
                 <tr>
                     <td><strong>Name:</strong></td>
@@ -75,6 +72,12 @@ body {
             </table>
             <button>
                 <a href="logout">Logout</a>
+            </button>
+            <button>
+                <a href="resources">view resource</a>
+            </button>
+            <button>
+                <a href="upload/upload.html">upload file</a>
             </button>
         </div>
     </div>

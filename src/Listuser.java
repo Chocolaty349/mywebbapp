@@ -18,9 +18,7 @@ public class Listuser extends HttpServlet {
         PrintWriter out = response.getWriter();
 
         try {
-            // Class.forName("com.mysql.jdbc.Driver");
-            // Connection con = DriverManager.getConnection(url, user, password);
-            Connection con = DBUtil.getConnection("jdbc:mysql://localhost:3306/classicmodels", "root", "password");
+            Connection con = DBUtil.getConnection("jdbc:mysql://localhost:3306/User", "root", "password");
             Statement stmt = con.createStatement();
             // String sql = "SELECT employeeNumber, lastName, firstName FROM employees where
             // employeeNumber = "
