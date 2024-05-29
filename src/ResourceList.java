@@ -10,8 +10,8 @@ import jakarta.servlet.annotation.WebServlet;
 @WebServlet(name = "ResourceList", value = "/resources")
 public class ResourceList extends HttpServlet{
 
-    private static String admin_path = "/opt/tomcat/apache-tomcat-10.1.23/webapps/mywebbapp/data";
-    private static String user_path = "/opt/tomcat/apache-tomcat-10.1.23/webapps/mywebbapp/normal_data";
+    private static String admin_path = "/usr/local/tomcat/webapps/mywebbapp/data";
+    private static String user_path = "/usr/local/tomcat/webapps/mywebbapp/normal_data";
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         File directory;
         String request_session = String.valueOf(request.getSession().getAttribute("sessionPrivilage"));

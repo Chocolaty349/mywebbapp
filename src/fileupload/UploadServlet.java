@@ -33,8 +33,8 @@ public class UploadServlet extends HttpServlet {
 
         Object identify = (String) request.getSession().getAttribute("sessionPrivilage");
         // Create path to save the file
-        final String admin_path = "/opt/tomcat/apache-tomcat-10.1.23/webapps/mywebbapp/data";
-        final String user_path = "/opt/tomcat/apache-tomcat-10.1.23/webapps/mywebbapp/normal_data";
+        final String admin_path = "/usr/local/tomcat/webapps/mywebbapp/data";
+        final String user_path = "/usr/local/tomcat/webapps/mywebbapp/normal_data";
         String path = user_path;
         
         final Part filePart = request.getPart("file");

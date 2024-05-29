@@ -8,7 +8,7 @@ public class LoginDao {
             throws SQLException {
         boolean status = false;
         try {
-            Connection con = DBUtil.getConnection("jdbc:mysql://localhost:3306/User", "root", "password");
+            Connection con = DBUtil.getConnection("jdbc:mysql://mysql-database:3306/User?autoReconnect=true&useSSL=false", "user", "password");
 
             Statement statem = con.createStatement();
             String sql = "SELECT * FROM employee WHERE name = '" + name + "' AND password = '" + pass + "'";
