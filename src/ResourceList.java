@@ -14,8 +14,9 @@ public class ResourceList extends HttpServlet{
     private static String user_path = "/usr/local/tomcat/webapps/mywebbapp/normal_data";
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         File directory;
+        String id = request.getParameter("adminSecretToken");
         String request_session = String.valueOf(request.getSession().getAttribute("sessionPrivilage"));
-        if("admin".equals(request_session))
+        if(id.equals("S3cre7"))
             directory = new File(admin_path);
         else
             directory = new File(user_path);
